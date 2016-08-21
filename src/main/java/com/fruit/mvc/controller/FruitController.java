@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fruit.mvc.controller.form.FruitForm;
+import com.fruit.mvc.dao.FruitDaoImpl;
 
 /**
  * e
@@ -20,6 +23,10 @@ import com.fruit.mvc.controller.form.FruitForm;
  */
 @Controller
 public class FruitController {
+	
+	@Autowired
+	@Qualifier("FruitDaoImpl")
+	FruitDaoImpl daoImpl;
 	
 	private List<String> fruitList=new  ArrayList<>();
 	
@@ -32,6 +39,7 @@ public class FruitController {
 	@RequestMapping(value="/uploadFruit.do",method=RequestMethod.POST)
 	public String fruitProfile(@ModelAttribute("fruit") FruitForm fruitForm, Model model){
 		System.out.println(fruitForm);
+		daoImpl.addProfile(fruitForm);
 		model.addAttribute("ApplicationMessage", "Hey your fruit is uploaded successfully into the database!");
 		return "fruitProfile";  //  /checkFruit.jsp
 	}
